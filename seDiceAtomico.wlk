@@ -16,7 +16,7 @@ object springfield {
 		return necesidadEnergetica
 	}
 	
-	method agregarCentrales(unaCentral){
+	method agregarCentral(unaCentral){
 		centrales.add(unaCentral)
 	}
 	
@@ -40,10 +40,6 @@ object springfield {
 		return  self.cantDeEnergiaProducida() > necesidadEnergetica
 	}
 	
-	method loQueProducenLasQueContaminan(){
-		return (self.lasCentralesQueContaminan()).sum({ central => central.produccionEnergetica() })
-	}
-	
 	method estaEnElHorno(){
 		return self.lasCentralesContaminantesAportanMucho() || self.todasLasCentralesSonContaminantes()
 	}
@@ -52,9 +48,18 @@ object springfield {
 		return self.loQueProducenLasQueContaminan() > (necesidadEnergetica / 2)
 	}
 	
+	method loQueProducenLasQueContaminan(){
+		return (self.lasCentralesQueContaminan()).sum({ central => central.produccionEnergetica() })
+	}
+	
 	method todasLasCentralesSonContaminantes(){
 		return centrales.all({ central => central.contaminacion() })
 	}
+	
+	method laCentralQueMasProduce(){
+		return centrales.max({ central => central.produccionEnergetica()})
+	}
+	
 }
 	
 object centralAtomica {
@@ -142,6 +147,61 @@ object centralEolica {
 	method contaminacion(){
 		return false
 	}
+}	
+
+object albuquerque {
+	var caudalDelRio = 150
+	var centrales = [centralHidroelectrica]
+	
+	method caudalDelRio(){
+		return caudalDelRio
+	}
+	
+	method agregarCentral(unaCentral){
+		centrales.add(unaCentral)
+	}
+	
+	method quitarCentral(unaCentral){
+		centrales.remove(unaCentral)
+	}
+	
+	method laCentralQueMasProduce(){
+		return centrales.max({ central => central.produccionEnergetica() })
+	}
 }
+
+object centralHidroelectrica{
+	 var ciudadEnLaQueEsta = albuquerque
+	
+	method nombre(){
+		return "Unica Central De Albuquerque"
+	}
+	
+	method produccionEnergetica(){
+		return 2000000 * ciudadEnLaQueEsta.caudalDelRio()
+	}
+}	
+
+object simpsonsLandia{
+	var ciudades = [springfield,albuquerque]
+	
+	method agregarCiudad(unaCiudad){
+		ciudades.add(unaCiudad)
+	}
+	
+	method quitarCiudad(unaCiudad){
+		ciudades.remove(unaCiudad)
+	}
+	
+	method lasQueMasProducenDeCadaCiudad(){
+		return ciudades.map({ciudad => ciudad.laCentralQueMasProduce()})
+	}
+	
+	method laMadreDeTodasLasCentrales(){
+		return (self.lasQueMasProducenDeCadaCiudad()).max({ central => central.produccionEnergetica() })
+	}
+}
+	
+
 
 
