@@ -1,0 +1,42 @@
+import seDiceAtomico.*
+describe "Test de los puntos pedidos en el TP" {
+
+	test "burns con 10 varillas produce 1 Mkwh en springfield." {
+		centralAtomica.varillasDeUranio(10)
+		assert.equals(1.000000,centralAtomica.produccionEnergetica())
+	}
+	
+	test "exBosque con una capacidad de 20 toneladas produce 18.5 Mkwh en springfield." {
+		centralDeCarbon.capacidadEnToneladas(20)
+		assert.equals(18.500000,centralDeCarbon.produccionEnergetica())
+	}
+	
+	test "elSuspiro produce 2 Mkwh en springfield." {
+		
+		assert.that(centralEolica.produccionEnergetica() == 2.000000)
+	}
+	
+	test "Teniendo las centrales anteriores, las centrales contamintantes de sprinfield es una colección que adentro tiene sólo a exBosque." {
+		
+		assert.equals([centralDeCarbon],springfield.lasCentralesQueContaminan())
+	}
+	
+	test "Teniendo las centrales anteriores, springfield cubrió su necesidad energética si ésta era de 20 Mkwh." {
+		springfield.necesidadEnergetica(20.000000)
+		assert.that(springfield.cubrioSusNecesidades()) //no llega a cubrir sus necesidades, produce solamente 2.50000. Por eso no pasa el test.
+	}
+	
+	test "Teniendo las centrales anteriores, springfield está al horno si posee una necesidad energética de 30 Mkwh." {
+		springfield.necesidadEnergetica(30.000000)
+		assert.that(springfield.estaEnElHorno()) // no esta en el horno porque las centrales que contaminan no producen ni la mitad de la necesidad energetica de Springfield, 
+		                                         // ni tampoco todas sus centrales son contaminantes
+	}
+	
+	test "Teniendo las centrales anteriores de springfield, las centrales más productoras de la región donde ésta se encuentra es una colección con exBosque de springfield y
+          la central hidroeléctrica de albuquerque" {
+		
+		assert.equals([centralDeCarbon,centralHidroelectrica],nacionSimpsons.lasQueMasProducenDeCadaCiudad()) // es falso, la central mas productora de springflied es la centralEolica, por ende el resultado
+		                                                                                                      // va a ser una coleccion de [centralEolica.centralHidroelectrica]
+	}
+	
+}
