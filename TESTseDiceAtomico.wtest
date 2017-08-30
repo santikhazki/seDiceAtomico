@@ -36,7 +36,7 @@ describe "Test de los puntos pedidos en el TP" {
           la central hidroeléctrica de albuquerque" {
 		
 		assert.equals([centralDeCarbon,centralHidroelectrica],nacionSimpsons.lasQueMasProducenDeCadaCiudad()) // es falso, la central mas productora de springflied es la centralEolica, por ende el resultado
-		                                                                                                      // va a ser una coleccion de [centralEolica.centralHidroelectrica]
+		                                                                                                      // va a ser una coleccion de [centralEolica,centralHidroelectrica]
 	}
 	
 }
